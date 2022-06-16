@@ -26,8 +26,7 @@ const initialState = {
 const ContextElement = React.createContext();
 
 export default function GlobalContext({ children }) {
-  const [state, dispatch] =
-    React.useReducer < any > (GlobalReducer, initialState);
+  const [state, dispatch] = React.useReducer(GlobalReducer, initialState);
   return (
     <ContextElement.Provider value={{ state, dispatch }}>
       {children}
