@@ -1,4 +1,4 @@
-export const GlobalReducer = (state: any, action: any) => {
+export const GlobalReducer = (state, action) => {
   switch (action.type) {
     case "SET_IDENTITY":
       return {
@@ -62,8 +62,7 @@ export const GlobalReducer = (state: any, action: any) => {
     case "REMOVE_PARTICIPANT": {
       let newParticipants = state?.participants;
       newParticipants = newParticipants.filter(
-        (participant: any) =>
-          participant.identity !== action.payload.participants
+        (participant) => participant.identity !== action.payload.participants
       );
       newParticipants.splice(
         newParticipants.indexOf(action.payload.participants.identity)
