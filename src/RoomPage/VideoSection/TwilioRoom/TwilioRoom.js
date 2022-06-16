@@ -4,10 +4,9 @@ import Participant from "./Participant";
 
 function TwilioRoom({ room }) {
   const { state, dispatch } = useContext();
-  const remoteParticipantsArray = Array.from(room.participants.values());
 
   const [remoteParticipants, setRemoteParticipants] = useState(
-    remoteParticipantsArray
+    Array.from(room.participants.values())
   );
 
   const addParticipantToContext = (participant) => {
@@ -23,7 +22,8 @@ function TwilioRoom({ room }) {
   const addParticipant = (participant) => {
     console.log(`${participant.identity} has joined the room`);
     addParticipantToContext(participant);
-    setRemoteParticipants(Array.from(room.participants.values()));
+    //setRemoteParticipants(Array.from(room.participants.values()));
+    setRemoteParticipants([...remoteParticipants, participant]);
   };
 
   const removeParticipantFromContext = (participant) => {
@@ -41,10 +41,10 @@ function TwilioRoom({ room }) {
 
   useEffect(() => {
     console.log(state);
-    // addParticipant(room.localParticipant);
-    remoteParticipants.map((remoteParticipant) =>
-      addParticipantToContext(remoteParticipant)
-    );
+    //addParticipant(room.localParticipant);
+    // remoteParticipants.map((remoteParticipant) =>
+    //   addParticipant(remoteParticipant)
+    // );
 
     room.on("participantConnected", (participant) => {
       addParticipant(participant);
@@ -55,18 +55,26 @@ function TwilioRoom({ room }) {
     });
   }, []);
 
+  // useEffect(() => {
+  //   setRemoteParticipants(Array.from(room.participants.values()));
+  // }, [room.participants]);
+
   useEffect(() => {
     console.log(state, room);
     console.log("participant", room.localParticipant);
     console.log("array", Array.from(room.participants.values()));
+    console.log("array", remoteParticipants);
   }, [Array.from(room.participants.values())]);
 
   return (
     <div className="room">
       <div className="participants">
-        <Participant participant={room.localParticipant} />
-        {Array.from(room.participants.values()).map((participant, index) => (
-          <Participant key={index} participant={participant} />
+        <Participant
+          localParticipant={true}
+          participant={room.localParticipant}
+        />
+        {remoteParticipants.map((participant, index) => (
+          <Participant key={index} participant={participant} index={index} />
         ))}
       </div>
     </div>

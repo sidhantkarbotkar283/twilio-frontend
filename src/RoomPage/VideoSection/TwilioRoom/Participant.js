@@ -3,11 +3,12 @@ import { useContext } from "../../../hooks/context/GlobalContext";
 import AudioTrack from "./AudioTrack";
 import VideoTrack from "./VideoTrack";
 
-function Participant({ localParticipant, participant }) {
-  const existingPublications = Array.from(participant.tracks.values());
-  console.log("participant", participant);
+function Participant({ localParticipant, participant, index }) {
+  console.log("participant", participant, index);
 
   const { dispatch } = useContext();
+
+  const existingPublications = Array.from(participant.tracks.values());
 
   const existingTracks = existingPublications.map(
     (publication) => publication.track
@@ -15,6 +16,7 @@ function Participant({ localParticipant, participant }) {
 
   const nonNullTracks = existingTracks.filter((track) => track !== null);
   const [tracks, setTracks] = useState(nonNullTracks);
+
   const addTrack = (track) => {
     if (track) setTracks([...tracks, track]);
   };
