@@ -25,7 +25,7 @@ const Participants = () => {
         <SingleParticipant
           // key={participant.identity}
           // identity={participant.identity}
-          key={participant}
+          key={index}
           identity={participant}
           lastItem={state?.participants.length === index + 1}
         />

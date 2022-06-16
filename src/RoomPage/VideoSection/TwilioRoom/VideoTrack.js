@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import ReactDOM from "react-dom";
 
-const VideoTrack = ({ track }) => {
+const VideoTrack = ({ track, participant }) => {
   const trackRef = useRef();
 
   useEffect(() => {
@@ -11,15 +11,16 @@ const VideoTrack = ({ track }) => {
 
     const videosPortal = document.getElementById("videos_portal");
 
-    if (!videosPortal.classList.contains("videos_portal_styles")) {
+    if (!videosPortal.classList.contains("videos_portal_styles"))
       videosPortal.classList.add("videos_portal_styles");
-    }
   }, []);
 
   const content = (
     <div className="video_track_container">
       <div ref={trackRef}></div>
-      <div className="participant-name">hello</div>
+      <div className="participant-name">
+        {participant.slice(36, participant.length)}
+      </div>
     </div>
   );
 

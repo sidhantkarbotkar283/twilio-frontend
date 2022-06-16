@@ -5,6 +5,8 @@ import VideoTrack from "./VideoTrack";
 
 function Participant({ localParticipant, participant }) {
   const existingPublications = Array.from(participant.tracks.values());
+  console.log("participant", participant);
+
   const { dispatch } = useContext();
 
   const existingTracks = existingPublications.map(
@@ -14,9 +16,7 @@ function Participant({ localParticipant, participant }) {
   const nonNullTracks = existingTracks.filter((track) => track !== null);
   const [tracks, setTracks] = useState(nonNullTracks);
   const addTrack = (track) => {
-    if (track) {
-      setTracks([...tracks, track]);
-    }
+    if (track) setTracks([...tracks, track]);
   };
 
   const removeTrack = (track) => {
@@ -40,18 +40,22 @@ function Participant({ localParticipant, participant }) {
       });
       participant.on("trackUnpublished", (track) => removeTrack(track));
     }
-  }, [participant]);
+  }, []);
 
   return (
     <div className="participant" id={participant.identity}>
-      {tracks.map((track) => {
-        if (track.kind === "audio") {
-          return <AudioTrack key={track} track={track} />;
-        }
+      {tracks.map((track, index) => {
+        if (track.kind === "audio")
+          return <AudioTrack key={index} track={track} />;
 
-        if (track.kind === "video") {
-          return <VideoTrack key={track} track={track} />;
-        }
+        if (track.kind === "video")
+          return (
+            <VideoTrack
+              key={index}
+              track={track}
+              participant={participant.identity}
+            />
+          );
       })}
     </div>
   );

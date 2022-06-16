@@ -12,9 +12,6 @@ const initialState = {
   showRoomNotFoundMessage: false,
   participants: [],
   messages: [],
-  setAcessTokenFunction: (token) => {
-    initialState.twilioAccessToken = token;
-  },
   setShowOverlay: (set) => {
     initialState.showOverlay = set;
   },
