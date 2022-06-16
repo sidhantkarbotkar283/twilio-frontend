@@ -12,31 +12,23 @@ const initialState = {
   showRoomNotFoundMessage: false,
   participants: [],
   messages: [],
-  setAcessTokenFunction: (token: any) => {
+  setAcessTokenFunction: (token) => {
     initialState.twilioAccessToken = token;
   },
-  setShowOverlay: (set: boolean) => {
+  setShowOverlay: (set) => {
     initialState.showOverlay = set;
   },
-  setMessages: (newMessages: any) => {
+  setMessages: (newMessages) => {
     initialState.messages = newMessages;
   },
 };
 
-type GlobalContextStateType = {
-  state: any;
-  dispatch: (action: any) => void;
-};
 
 const ContextElement = React.createContext<GlobalContextStateType>(
-  {} as GlobalContextStateType
 );
 
-type Props = {
-  children: React.ReactNode;
-};
 
-export default function GlobalContext({ children }: Props): JSX.Element {
+export default function GlobalContext({ children }) {
   const [state, dispatch] = React.useReducer<any>(GlobalReducer, initialState);
   return (
     <ContextElement.Provider value={{ state, dispatch }}>
