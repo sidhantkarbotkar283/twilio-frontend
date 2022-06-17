@@ -5,7 +5,7 @@ const AudioTrack = ({ track }) => {
 
   useEffect(() => {
     const child = track.attach();
-    trackRef.current.classList.add(track.kind);
+    trackRef.current.classList.add("audio");
     trackRef.current.appendChild(child);
   }, []);
 

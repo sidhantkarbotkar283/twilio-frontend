@@ -42,9 +42,9 @@ function TwilioRoom({ room }) {
   useEffect(() => {
     console.log(state);
     //addParticipant(room.localParticipant);
-    // remoteParticipants.map((remoteParticipant) =>
-    //   addParticipant(remoteParticipant)
-    // );
+    remoteParticipants.map((remoteParticipant) =>
+      addParticipantToContext(remoteParticipant)
+    );
 
     room.on("participantConnected", (participant) => {
       addParticipant(participant);
@@ -55,16 +55,16 @@ function TwilioRoom({ room }) {
     });
   }, []);
 
-  // useEffect(() => {
-  //   setRemoteParticipants(Array.from(room.participants.values()));
-  // }, [room.participants]);
+  useEffect(() => {
+    setRemoteParticipants(Array.from(room.participants.values()));
+  }, [room.participants]);
 
   useEffect(() => {
     console.log(state, room);
     console.log("participant", room.localParticipant);
     console.log("array", Array.from(room.participants.values()));
     console.log("array", remoteParticipants);
-  }, [Array.from(room.participants.values())]);
+  }, [remoteParticipants, room, state]);
 
   return (
     <div className="room">

@@ -3,11 +3,15 @@ import ReactDOM from "react-dom";
 
 const VideoTrack = ({ track, participant }) => {
   const trackRef = useRef();
-  console.log("this is ", participant.slice(36, participant.length));
+
   useEffect(() => {
+    console.log("this is ", participant.slice(36, participant.length));
     const child = track.attach();
-    trackRef.current.classList.add(track.kind);
+    console.log("child", child);
+    // trackRef.current.classList.add(track.kind);
+    trackRef.current.classList.add("video");
     trackRef.current.appendChild(child);
+    console.log("trackRef", trackRef);
 
     const videosPortal = document.getElementById("videos_portal");
 
@@ -18,7 +22,7 @@ const VideoTrack = ({ track, participant }) => {
 
   const content = (
     <div className="video_track_container">
-      <div ref={trackRef}></div>
+      <div ref={trackRef} id={participant.slice(36, participant.length)} />
       <div className="participant-name">
         {participant.slice(36, participant.length)}
       </div>
