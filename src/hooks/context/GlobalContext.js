@@ -11,6 +11,7 @@ const initialState = {
   showOverlay: true,
   showRoomNotFoundMessage: false,
   participants: [],
+  remoteParticipants: [],
   messages: [],
   setShowOverlay: (set) => {
     initialState.showOverlay = set;

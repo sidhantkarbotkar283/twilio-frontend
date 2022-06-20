@@ -85,6 +85,21 @@ export const GlobalReducer = (state, action) => {
         messages: [...state?.messages, action.payload.messages],
       };
 
+    case "SET_REMOTE_PARTICIPANTS":
+      return {
+        ...state,
+        remoteParticipants: action.payload.participants,
+      };
+
+    case "ADD_REMOTE_PARTICIPANTS":
+      return {
+        ...state,
+        remoteParticipants: [
+          ...state?.remoteParticipants,
+          action.payload.participants,
+        ],
+      };
+
     default: {
       return state;
     }
