@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import ParticipantsSection from "./ParticipantsSection/ParticipantsSection";
 import VideoSection from "./VideoSection/VideoSection";
@@ -7,6 +7,7 @@ import { getTokenFromTwilio } from "../utils/twilioUtils";
 import Overlay from "./Overlay";
 import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
+import { Tabs, Tab } from "@mui/material";
 
 import "./RoomPage.css";
 import { useContext } from "../hooks/context/GlobalContext";
@@ -31,12 +32,19 @@ const RoomPage = () => {
     }
   }, []);
 
+  const [tab, setTab] = useState(0);
+
   return (
     <div className="room_container">
-      <ParticipantsSection />
       <VideoSection />
-      <ChatSection />
-      {state?.showLoadingOverlay && <Overlay />}
+      <div className="chat_participant_container">
+        <Tabs value={tab} onChange={(event, newValue) => setTab(newValue)}>
+          <Tab value={0} label="Participants" />
+          <Tab value={1} label="Chat" />
+        </Tabs>
+        {tab == 0 ? <ParticipantsSection /> : <ChatSection />}
+        {state?.showLoadingOverlay && <Overlay />}
+      </div>
     </div>
   );
 };

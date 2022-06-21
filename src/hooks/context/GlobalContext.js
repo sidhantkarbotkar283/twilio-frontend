@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { GlobalReducer } from "../reducer/reducer";
 
 const initialState = {
@@ -25,8 +25,11 @@ const ContextElement = React.createContext();
 
 export default function GlobalContext({ children }) {
   const [state, dispatch] = React.useReducer(GlobalReducer, initialState);
+  const [isMicMuted, setIsMicMuted] = useState(false);
   return (
-    <ContextElement.Provider value={{ state, dispatch }}>
+    <ContextElement.Provider
+      value={{ state, dispatch, isMicMuted, setIsMicMuted }}
+    >
       {children}
     </ContextElement.Provider>
   );

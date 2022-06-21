@@ -1,64 +1,72 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useContext } from "../../../hooks/context/GlobalContext";
-import AudioTrack from "./AudioTrack";
-import VideoTrack from "./VideoTrack";
+import { getParticipantName } from "./../../../utils/twilioUtils";
 
-function Participant({ localParticipant, participant, index }) {
-  console.log("participant", participant, index);
+function Participant({ participant }) {
+  const [videoTracks, setVideoTracks] = useState([]);
+  const [audioTracks, setAudioTracks] = useState([]);
 
-  const { dispatch } = useContext();
+  const { isMicMuted } = useContext();
 
-  const existingPublications = Array.from(participant.tracks.values());
+  const videoRef = useRef();
+  const audioRef = useRef();
 
-  const existingTracks = existingPublications.map(
-    (publication) => publication.track
-  );
-
-  const nonNullTracks = existingTracks.filter((track) => track !== null);
-  const [tracks, setTracks] = useState(nonNullTracks);
-
-  const addTrack = (track) => {
-    if (track) setTracks([...tracks, track]);
-  };
-
-  const removeTrack = (track) => {
-    if (track) {
-      const newTracks = tracks.filter((t) => t.name !== track.trackName);
-      setTracks(newTracks);
-    }
-  };
+  const trackpubsToTracks = (trackMap) =>
+    Array.from(trackMap.values())
+      .map((publication) => publication.track)
+      .filter((track) => track !== null);
 
   useEffect(() => {
-    if (!localParticipant) {
-      participant.on("trackSubscribed", (track) => {
-        if (track.kind === "data") {
-          track.on("message", (data) => {
-            dispatch({
-              type: "ADD_MESSAGES",
-              payload: { messages: JSON.parse(data) },
-            });
-          });
-        } else addTrack(track);
-      });
-      participant.on("trackUnpublished", (track) => removeTrack(track));
+    setVideoTracks(trackpubsToTracks(participant.videoTracks));
+    setAudioTracks(trackpubsToTracks(participant.audioTracks));
+
+    const trackSubscribed = (track) => {
+      if (track.kind === "video")
+        setVideoTracks((videoTracks) => [...videoTracks, track]);
+      else if (track.kind === "audio")
+        setAudioTracks((audioTracks) => [...audioTracks, track]);
+    };
+
+    const trackUnsubscribed = (track) => {
+      if (track.kind === "video")
+        setVideoTracks((videoTracks) => videoTracks.filter((v) => v !== track));
+      else if (track.kind === "audio")
+        setAudioTracks((audioTracks) => audioTracks.filter((a) => a !== track));
+    };
+
+    participant.on("trackSubscribed", trackSubscribed);
+    participant.on("trackUnsubscribed", trackUnsubscribed);
+
+    return () => {
+      setVideoTracks([]);
+      setAudioTracks([]);
+      participant.removeAllListeners();
+    };
+  }, [participant]);
+
+  useEffect(() => {
+    const videoTrack = videoTracks[0];
+    if (videoTrack) {
+      videoTrack.attach(videoRef.current);
+      return () => {
+        videoTrack.detach();
+      };
     }
-  }, []);
+  }, [videoTracks]);
+
+  useEffect(() => {
+    const audioTrack = audioTracks[0];
+    if (audioTrack) {
+      audioTrack.attach(audioRef.current);
+      return () => audioTrack.detach();
+    }
+  }, [audioTracks]);
 
   return (
-    <div className="participant" id={participant.identity}>
-      {tracks.map((track, index) => {
-        if (track.kind === "audio")
-          return <AudioTrack key={index} track={track} />;
-
-        if (track.kind === "video")
-          return (
-            <VideoTrack
-              key={index}
-              track={track}
-              participant={participant.identity}
-            />
-          );
-      })}
+    <div className="participant">
+      <h3>{getParticipantName(participant.identity)}</h3>
+      <video ref={videoRef} autoPlay={true} />
+      <audio ref={audioRef} autoPlay={true} muted={isMicMuted} />
     </div>
   );
 }

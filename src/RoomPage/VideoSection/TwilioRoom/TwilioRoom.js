@@ -3,176 +3,47 @@ import { useContext } from "../../../hooks/context/GlobalContext";
 import Participant from "./Participant";
 
 function TwilioRoom({ room }) {
-  const { state, dispatch } = useContext();
-
-  const [remoteParticipants, setRemoteParticipants] = useState(
-    Array.from(room.participants.values())
-  );
-
-  const addParticipantToContext = (participant) => {
-    const participants = state?.participants;
-    if (participants.find((p) => p.identity === participant.identity)) return;
-    else
-      dispatch({
-        type: "ADD_PARTICIPANT",
-        payload: { participant: participant.identity },
-      });
-  };
-
-  const addParticipant = (participant) => {
-    console.log(`${participant.identity} has joined the room`);
-    addParticipantToContext(participant);
-    //setRemoteParticipants(Array.from(room.participants.values()));
-    setRemoteParticipants([...remoteParticipants, participant]);
-  };
-
-  const removeParticipantFromContext = (participant) => {
-    dispatch({
-      type: "REMOVE_PARTICIPANT",
-      payload: { participants: participant },
-    });
-  };
-
-  const removeParticipant = (participant) => {
-    console.log(`${participant.identity} has left the room`);
-    removeParticipantFromContext(participant);
-    setRemoteParticipants(Array.from(room.participants.values()));
-  };
-
+  const [participants, setParticipants] = useState([]);
   useEffect(() => {
-    console.log(state);
-    //addParticipant(room.localParticipant);
-    remoteParticipants.map((remoteParticipant) =>
-      addParticipantToContext(remoteParticipant)
-    );
+    const participantConnected = (participant) => {
+      setParticipants((prevParticipants) => [...prevParticipants, participant]);
+    };
 
-    room.on("participantConnected", (participant) => {
-      addParticipant(participant);
-    });
+    const participantDisconnected = (participant) => {
+      setParticipants((prevParticipants) =>
+        prevParticipants.filter((p) => p !== participant)
+      );
+    };
 
-    room.on("participantDisconnected", (participant) => {
-      removeParticipant(participant);
-    });
-  }, []);
+    room.on("participantConnected", participantConnected);
+    room.on("participantDisconnected", participantDisconnected);
+    room.participants.forEach(participantConnected);
+    return () => {
+      room.off("participantConnected", participantConnected);
+      room.off("participantDisconnected", participantDisconnected);
+    };
+  }, [room]);
 
-  useEffect(() => {
-    setRemoteParticipants(Array.from(room.participants.values()));
-  }, [room.participants]);
-
-  useEffect(() => {
-    console.log(state, room);
-    console.log("participant", room.localParticipant);
-    console.log("array", Array.from(room.participants.values()));
-    console.log("array", remoteParticipants);
-  }, [remoteParticipants, room, state]);
+  const remoteParticipants = participants.map((participant) => (
+    <Participant key={participant.sid} participant={participant} />
+  ));
 
   return (
     <div className="room">
-      <div className="participants">
-        <Participant
-          localParticipant={true}
-          participant={room.localParticipant}
-        />
-        {remoteParticipants.map((participant, index) => (
-          <Participant key={index} participant={participant} index={index} />
-        ))}
+      <div className="local-participant">
+        {room ? (
+          <Participant
+            key={room.localParticipant.sid}
+            participant={room.localParticipant}
+          />
+        ) : (
+          ""
+        )}
       </div>
+      <h3>Remote Participants</h3>
+      <div className="remote-participants">{remoteParticipants}</div>
     </div>
   );
 }
 
 export default TwilioRoom;
-
-// import React, { Component } from "react";
-// import Participant from "./Participant";
-
-// class TwilioRoom extends Component {
-//   constructor(props) {
-//     super(props);
-
-//     const remoteParticipants = Array.from(
-//       this.props.room.participants.values()
-//     );
-
-//     this.state = {
-//       remoteParticipants: remoteParticipants,
-//     };
-
-//     remoteParticipants.forEach((participant) => {
-//       this.addParticipantToStore(participant);
-//     });
-//   }
-
-//   componentDidMount() {
-//     this.props.room.on("participantConnected", (participant) =>
-//       this.addParticipant(participant)
-//     );
-
-//     this.props.room.on("participantDisconnected", (participant) => {
-//       this.removeParticipant(participant);
-//     });
-//   }
-
-//   addParticipantToStore(participant) {
-//     const participants = this.props.contextParticipants;
-
-//     if (participants.find((p) => p.identity === participant.identity)) {
-//       return;
-//     } else {
-//       const newParticipants = [...participants];
-//       newParticipants.push({ identity: participant.identity });
-//       // store.dispatch(setParticipants(newParticipants));
-//     }
-//   }
-
-//   addParticipant(participant) {
-//     console.log(`${participant.identity} has joined the room`);
-//     this.addParticipantToStore(participant);
-
-//     this.setState({
-//       remoteParticipants: [...this.state.remoteParticipants, participant],
-//     });
-//     console.log(this.props.contextParticipants);
-//   }
-
-//   removeParticipantFromStore(participant) {
-//     const participants = this.props.contextParticipants.filter(
-//       (p) => p.identity !== participant.identity
-//     );
-//     //store.dispatch(setParticipants(participants));
-//   }
-
-//   removeParticipant(participant) {
-//     console.log(`${participant.identity} has left the room`);
-//     this.removeParticipantFromStore(participant);
-//     this.setState({
-//       remoteParticipants: this.state.remoteParticipants.filter(
-//         (p) => p.identity !== participant.identity
-//       ),
-//     });
-//   }
-
-//   render() {
-//     return (
-//       <div className="room">
-//         <div className="participants">
-//           <Participant
-//             key={this.props.room.localParticipant.identity}
-//             localParticipant
-//             participant={this.props.room.localParticipant}
-//           />
-//           {this.state.remoteParticipants.map((participant) => {
-//             return (
-//               <Participant
-//                 key={participant.identity}
-//                 participant={participant}
-//               />
-//             );
-//           })}
-//         </div>
-//       </div>
-//     );
-//   }
-// }
-
-// export default TwilioRoom;

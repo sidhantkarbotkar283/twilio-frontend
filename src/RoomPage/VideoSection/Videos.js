@@ -20,7 +20,8 @@ const Videos = ({ room, setRoom }) => {
 
   return (
     <div className="videos_container">
-      <RoomLabel />
+      {/* <RoomLabel /> */}
+      <div>ID: {state?.roomId}</div>
       {room && (
         <TwilioRoom room={room} contextParticipants={state?.participants} />
       )}

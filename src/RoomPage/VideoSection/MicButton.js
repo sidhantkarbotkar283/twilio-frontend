@@ -1,13 +1,14 @@
 import React, { useState } from "react";
+import { useContext } from "../../hooks/context/GlobalContext";
 
 import MicButtonImg from "../../resources/images/mic.svg";
 import MicButtonImgOff from "../../resources/images/micOff.svg";
 
 const MicButton = ({ room }) => {
-  const [isMicMuted, setIsMicMuted] = useState(false);
-
+  // const [isMicMuted, setIsMicMuted] = useState(false);
+  const { isMicMuted, setIsMicMuted } = useContext();
   const handleMicButtonPressed = () => {
-    isMicMuted ? unmute() : mute();
+    // isMicMuted ? unmute() : mute();
     setIsMicMuted(!isMicMuted);
   };
 

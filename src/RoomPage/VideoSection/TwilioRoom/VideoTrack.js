@@ -6,6 +6,7 @@ const VideoTrack = ({ track, participant }) => {
 
   useEffect(() => {
     console.log("this is ", participant.slice(36, participant.length));
+    console.log("track in VideoTrack", track);
     const child = track.attach();
     console.log("child", child);
     // trackRef.current.classList.add(track.kind);

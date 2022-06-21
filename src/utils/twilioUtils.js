@@ -111,3 +111,7 @@ export const sendMessagesUsingDataChannel = (
 
   return ownMessage;
 };
+
+export const getParticipantName = (string) => {
+  return string.slice(36, string.length);
+};
