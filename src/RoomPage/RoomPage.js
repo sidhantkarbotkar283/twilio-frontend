@@ -21,9 +21,10 @@ const RoomPage = () => {
     if (!state.identity || !state.roomId) history.push("/");
     else {
       const response = await axios.get(
-        `https://twilio-unleashed-4247-dev.twil.io/token-service?identity=${randomId}${state?.identity}`
+        `https://twilio-unleashed-9360-dev.twil.io/token-service?identity=${randomId}${state?.identity}`
       );
       if (response.data.accessToken) {
+        console.log("token", response.data);
         dispatch({
           type: "SET_TWILIO_ACCESS_TOKEN",
           payload: { token: response.data.accessToken },
@@ -42,7 +43,7 @@ const RoomPage = () => {
           <Tab value={0} label="Participants" />
           <Tab value={1} label="Chat" />
         </Tabs>
-        {tab == 0 ? <ParticipantsSection /> : <ChatSection />}
+        {tab === 0 ? <ParticipantsSection /> : <ChatSection />}
         {state?.showLoadingOverlay && <Overlay />}
       </div>
     </div>

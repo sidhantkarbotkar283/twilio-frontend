@@ -66,7 +66,7 @@ function Participant({ participant }) {
     <div className="participant">
       <h3>{getParticipantName(participant.identity)}</h3>
       <video ref={videoRef} autoPlay={true} />
-      <audio ref={audioRef} autoPlay={true} muted={isMicMuted} />
+      <audio ref={audioRef} autoPlay={true} />
     </div>
   );
 }
