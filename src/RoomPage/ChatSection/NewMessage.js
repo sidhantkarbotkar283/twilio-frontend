@@ -41,7 +41,7 @@ const NewMessage = () => {
       className="new_message_input"
       value={message}
       onChange={handleTextChange}
-      placeholder="Type your message..."
+      label="Type your message..."
       type="text"
       onKeyDown={handleKeyPressed}
       InputProps={{

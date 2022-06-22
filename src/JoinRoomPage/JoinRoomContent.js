@@ -1,12 +1,9 @@
 import React, { useState } from "react";
-import JoinRoomInputs from "./JoinRoomInputs";
-import OnlyWithAudioCheckbox from "./OnlyWithAudioCheckbox";
-import RoomNotFoundMessage from "./RoomNotFoundMessage";
-import JoinRoomButtons from "./JoinRoomButtons";
 import { useHistory } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import { checkIfRoomExists } from "../utils/twilioUtils";
 import { useContext } from "../hooks/context/GlobalContext";
+import { TextField, Button } from "@mui/material";
 
 const JoinRoomContent = ({ setShowLoadingOverlay }) => {
   const [roomIdValue, setRoomIdValue] = useState("");
@@ -15,13 +12,6 @@ const JoinRoomContent = ({ setShowLoadingOverlay }) => {
   const history = useHistory();
 
   const { state, dispatch } = useContext();
-
-  React.useEffect(() => {
-    dispatch({
-      type: "SET_SHOW_ROOMNOTFOUND",
-      payload: { showRoomNotFoundMessage: false },
-    });
-  }, []);
 
   const handleJoinToRoom = async () => {
     dispatch({
@@ -52,18 +42,60 @@ const JoinRoomContent = ({ setShowLoadingOverlay }) => {
     }
   };
 
+  React.useEffect(() => {
+    dispatch({
+      type: "SET_SHOW_ROOMNOTFOUND",
+      payload: { showRoomNotFoundMessage: false },
+    });
+  }, []);
+
+  const handleRoomIdValueChange = (event) => {
+    setRoomIdValue(event.target.value);
+  };
+
+  const handleNameValueChange = (event) => {
+    setNameValue(event.target.value);
+  };
+
+  const pushToIntroductionPage = () => {
+    history.push("/");
+  };
+
   return (
     <>
-      <JoinRoomInputs
-        roomIdValue={roomIdValue}
-        setRoomIdValue={setRoomIdValue}
-        nameValue={nameValue}
-        setNameValue={setNameValue}
-        isRoomHost={state.isRoomHost}
-      />
-      <OnlyWithAudioCheckbox />
-      <RoomNotFoundMessage />
-      <JoinRoomButtons handleJoinToRoom={handleJoinToRoom} />
+      <div className="join_room_inputs_container">
+        {!state.isRoomHost && (
+          <TextField
+            label="Enter meeting ID"
+            value={roomIdValue}
+            size="small"
+            className="join_room_input"
+            onChange={handleRoomIdValueChange}
+          />
+        )}
+        <TextField
+          label="Enter your Name"
+          value={nameValue}
+          size="small"
+          className="join_room_input"
+          onChange={handleNameValueChange}
+        />
+      </div>
+      <div className="room_not_found_container">
+        {state?.showRoomNotFoundMessage && (
+          <p className="room_not_found_paragraph">
+            Room has not been found. Please try again.
+          </p>
+        )}
+      </div>
+      <div className="flex width-100 h-center gap-20">
+        <Button variant="contained" onClick={handleJoinToRoom}>
+          {state?.isRoomHost ? "Host" : "Join"}
+        </Button>
+        <Button variant="outlined" onClick={pushToIntroductionPage}>
+          Cancel
+        </Button>
+      </div>
     </>
   );
 };

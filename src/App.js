@@ -6,6 +6,8 @@ import IntroductionPage from "./IntroductionPage/IntroductionPage";
 
 import "./App.css";
 
+import "./style/styles.scss";
+
 function App() {
   return (
     <Router>

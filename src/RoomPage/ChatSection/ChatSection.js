@@ -5,7 +5,7 @@ import NewMessage from "./NewMessage";
 
 const ChatSection = () => {
   return (
-    <div className="chat_section_container">
+    <div className="chat_section_container flex flex-column">
       {/* <ChatLabel /> */}
       <Messages />
       <NewMessage />

@@ -1,0 +1,28 @@
+@import './../variables/variables.scss';
+
+html {
+    scrollbar-width: thin;
+    scrollbar-color: $scrollBar $whiteColor;
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: $scrollBar;
+    border-radius: 20px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: $scrollBarHover;
+}
+
+
+// /dialog scroll
+.css-1t1j96h-MuiPaper-root-MuiDialog-paper {
+    &::-webkit-scrollbar {
+        width: 5px;
+    }
+}

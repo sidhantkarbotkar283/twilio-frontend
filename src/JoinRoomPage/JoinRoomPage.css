@@ -106,9 +106,9 @@
 }
 
 .join_room_buttons_container {
-  display: flex;
+  /* display: flex;
   justify-content: flex-end;
-  width: 100%;
+  width: 100%; */
 }
 
 .join_room_cancel_button {

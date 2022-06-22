@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { useContext } from "../../hooks/context/GlobalContext";
 import { connectToRoom } from "../../utils/twilioUtils";
-import RoomLabel from "./RoomLabel";
 import TwilioRoom from "./TwilioRoom/TwilioRoom";
 
 const Videos = ({ room, setRoom }) => {
@@ -20,7 +19,6 @@ const Videos = ({ room, setRoom }) => {
 
   return (
     <div className="videos_container">
-      {/* <RoomLabel /> */}
       <div>ID: {state?.roomId}</div>
       {room && (
         <TwilioRoom room={room} contextParticipants={state?.participants} />
