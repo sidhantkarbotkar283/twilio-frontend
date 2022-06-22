@@ -52,8 +52,9 @@ function Participant({ participant }) {
   }, [participant]);
 
   useEffect(() => {
-    const videoTrack = videoTracks[0];
+    const videoTrack = videoTracks[videoTracks.length - 1];
     if (videoTrack) {
+      debugger;
       videoTrack.attach(videoRef.current);
       return () => {
         videoTrack.detach();
