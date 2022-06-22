@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { useContext } from "../../../hooks/context/GlobalContext";
 import { getParticipantName } from "./../../../utils/twilioUtils";
 
-function Participant({ participant }) {
+function Participant({ participant, localParticipant = false }) {
   const { dispatch } = useContext();
 
   const [videoTracks, setVideoTracks] = useState([]);
@@ -17,6 +17,11 @@ function Participant({ participant }) {
       .filter((track) => track !== null);
 
   useEffect(() => {
+    // console.log(participant);
+    // participant?.audioTracks?.forEach((localAudioTrackPublication) => {
+    //   if (!localParticipant) console.log(localAudioTrackPublication.track);
+    // });
+
     setVideoTracks(trackpubsToTracks(participant.videoTracks));
     setAudioTracks(trackpubsToTracks(participant.audioTracks));
 

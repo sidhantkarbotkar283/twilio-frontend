@@ -33,6 +33,7 @@ function TwilioRoom({ room }) {
       <div className="local-participant">
         {room ? (
           <Participant
+            localParticipant
             key={room.localParticipant.sid}
             participant={room.localParticipant}
           />
