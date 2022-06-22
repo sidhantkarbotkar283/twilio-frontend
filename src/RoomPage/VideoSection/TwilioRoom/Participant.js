@@ -3,10 +3,10 @@ import { useContext } from "../../../hooks/context/GlobalContext";
 import { getParticipantName } from "./../../../utils/twilioUtils";
 
 function Participant({ participant }) {
+  const { dispatch } = useContext();
+
   const [videoTracks, setVideoTracks] = useState([]);
   const [audioTracks, setAudioTracks] = useState([]);
-
-  const { isMicMuted } = useContext();
 
   const videoRef = useRef();
   const audioRef = useRef();
@@ -25,6 +25,13 @@ function Participant({ participant }) {
         setVideoTracks((videoTracks) => [...videoTracks, track]);
       else if (track.kind === "audio")
         setAudioTracks((audioTracks) => [...audioTracks, track]);
+      else if (track.kind === "data")
+        track.on("message", (data) => {
+          dispatch({
+            type: "ADD_MESSAGES",
+            payload: { messages: JSON.parse(data) },
+          });
+        });
     };
 
     const trackUnsubscribed = (track) => {

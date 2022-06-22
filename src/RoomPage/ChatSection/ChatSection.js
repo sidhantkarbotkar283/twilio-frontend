@@ -6,7 +6,7 @@ import NewMessage from "./NewMessage";
 const ChatSection = () => {
   return (
     <div className="chat_section_container">
-      <ChatLabel />
+      {/* <ChatLabel /> */}
       <Messages />
       <NewMessage />
     </div>

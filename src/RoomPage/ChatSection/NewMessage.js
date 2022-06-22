@@ -1,11 +1,13 @@
+import { TextField, InputAdornment } from "@mui/material";
 import React, { useState } from "react";
 import { useContext } from "../../hooks/context/GlobalContext";
-import SendMessageButton from "../../resources/images/sendMessageButton.svg";
 import { sendMessagesUsingDataChannel } from "../../utils/twilioUtils";
+import SendIcon from "@mui/icons-material/Send";
 
 const NewMessage = () => {
   const [message, setMessage] = useState("");
   const { state, dispatch } = useContext();
+
   const sendMessage = () => {
     console.log(message);
     let newMessage = sendMessagesUsingDataChannel(
@@ -36,21 +38,21 @@ const NewMessage = () => {
   };
 
   return (
-    <div className="new_message_container">
-      <input
-        className="new_message_input"
-        value={message}
-        onChange={handleTextChange}
-        placeholder="Type your message..."
-        type="text"
-        onKeyDown={handleKeyPressed}
-      />
-      <img
-        className="new_message_button"
-        src={SendMessageButton}
-        onClick={sendMessage}
-      />
-    </div>
+    <TextField
+      className="new_message_input"
+      value={message}
+      onChange={handleTextChange}
+      placeholder="Type your message..."
+      type="text"
+      onKeyDown={handleKeyPressed}
+      InputProps={{
+        endAdornment: (
+          <InputAdornment position="start">
+            <SendIcon />
+          </InputAdornment>
+        ),
+      }}
+    />
   );
 };
 

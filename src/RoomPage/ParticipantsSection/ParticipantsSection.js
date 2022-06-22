@@ -5,7 +5,6 @@ import ParticipantsLabel from "./ParticipantsLabel";
 const ParticipantsSection = () => {
   return (
     <div className="participants_section_container">
-      <ParticipantsLabel />
       <Participants />
     </div>
   );

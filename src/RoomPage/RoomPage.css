@@ -287,13 +287,13 @@ video {
 /* video section? */
 .video_section_container {
   height: 100%;
-  width: 70%;
+  width: 80%;
   display: flex;
   flex-direction: column;
 }
 
 .chat_participant_container {
-  width: 30%;
+  width: 20%;
   height: 90%;
   display: flex;
   flex-direction: column;
@@ -317,7 +317,6 @@ video {
 .participants_label_paragraph {
   font-weight: 700;
   color: #9ca5ab;
-  margin-left: 40px;
   font-size: 16px;
 }
 
