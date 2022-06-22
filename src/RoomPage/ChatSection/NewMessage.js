@@ -9,7 +9,6 @@ const NewMessage = () => {
   const { state, dispatch } = useContext();
 
   const sendMessage = () => {
-    console.log(message);
     let newMessage = sendMessagesUsingDataChannel(
       message,
       true,

@@ -46,33 +46,6 @@ export const GlobalReducer = (state, action) => {
         showRoomNotFoundMessage: action.payload.showRoomNotFoundMessage,
       };
 
-    case "SET_PARTICIPANTS":
-      console.log(action.payload.participants);
-      return {
-        ...state,
-        participants: action.payload.participant,
-      };
-
-    case "ADD_PARTICIPANT":
-      return {
-        ...state,
-        participants: [...state.participants, action.payload.participant],
-      };
-
-    case "REMOVE_PARTICIPANT": {
-      let newParticipants = state?.participants;
-      newParticipants = newParticipants.filter(
-        (participant) => participant.identity !== action.payload.participants
-      );
-      newParticipants.splice(
-        newParticipants.indexOf(action.payload.participants.identity)
-      );
-      return {
-        ...state,
-        participants: [...newParticipants],
-      };
-    }
-
     case "SET_MESSAGES":
       return {
         ...state,
@@ -83,21 +56,6 @@ export const GlobalReducer = (state, action) => {
       return {
         ...state,
         messages: [...state?.messages, action.payload.messages],
-      };
-
-    case "SET_REMOTE_PARTICIPANTS":
-      return {
-        ...state,
-        remoteParticipants: action.payload.participants,
-      };
-
-    case "ADD_REMOTE_PARTICIPANTS":
-      return {
-        ...state,
-        remoteParticipants: [
-          ...state?.remoteParticipants,
-          action.payload.participants,
-        ],
       };
 
     default: {

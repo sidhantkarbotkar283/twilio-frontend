@@ -52,14 +52,21 @@ function Participant({ participant }) {
   }, [participant]);
 
   useEffect(() => {
-    const videoTrack = videoTracks[videoTracks.length - 1];
-    if (videoTrack) {
-      debugger;
-      videoTrack.attach(videoRef.current);
-      return () => {
-        videoTrack.detach();
-      };
-    }
+    videoTracks.map((track) => {
+      if (track) {
+        track.attach(videoRef.current);
+        return () => {
+          track.detach();
+        };
+      }
+    });
+    // const videoTrack = videoTracks[videoTracks.length - 1];
+    // if (videoTrack) {
+    //   videoTrack.attach(videoRef.current);
+    //   return () => {
+    //     videoTrack.detach();
+    //   };
+    // }
   }, [videoTracks]);
 
   useEffect(() => {

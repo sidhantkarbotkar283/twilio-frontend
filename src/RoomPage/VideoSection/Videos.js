@@ -5,7 +5,7 @@ import RoomLabel from "./RoomLabel";
 import TwilioRoom from "./TwilioRoom/TwilioRoom";
 
 const Videos = ({ room, setRoom }) => {
-  const { state } = useContext();
+  const { state, setShowOverlay } = useContext();
   useEffect(() => {
     if (state?.twilioAccessToken) {
       connectToRoom(
@@ -13,7 +13,7 @@ const Videos = ({ room, setRoom }) => {
         state?.roomId,
         setRoom,
         state?.connectOnlyWithAudio,
-        state?.setShowOverlay
+        setShowOverlay
       );
     }
   }, [state?.twilioAccessToken]);

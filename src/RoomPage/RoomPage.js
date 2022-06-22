@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import ParticipantsSection from "./ParticipantsSection/ParticipantsSection";
+import Participants from "./ParticipantsSection/Participants";
 import VideoSection from "./VideoSection/VideoSection";
 import ChatSection from "./ChatSection/ChatSection";
-import { getTokenFromTwilio } from "../utils/twilioUtils";
 import Overlay from "./Overlay";
 import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
@@ -14,7 +13,7 @@ import { useContext } from "../hooks/context/GlobalContext";
 
 const RoomPage = () => {
   const history = useHistory();
-  const { state, dispatch } = useContext();
+  const { state, dispatch, showOverlay } = useContext();
   const randomId = uuidv4();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(async () => {
@@ -24,7 +23,6 @@ const RoomPage = () => {
         `https://twilio-unleashed-9360-dev.twil.io/token-service?identity=${randomId}${state?.identity}`
       );
       if (response.data.accessToken) {
-        console.log("token", response.data);
         dispatch({
           type: "SET_TWILIO_ACCESS_TOKEN",
           payload: { token: response.data.accessToken },
@@ -37,14 +35,14 @@ const RoomPage = () => {
 
   return (
     <div className="room_container">
+      {showOverlay && <Overlay />}
       <VideoSection />
       <div className="chat_participant_container">
         <Tabs value={tab} onChange={(event, newValue) => setTab(newValue)}>
           <Tab value={0} label="Participants" />
           <Tab value={1} label="Chat" />
         </Tabs>
-        {tab === 0 ? <ParticipantsSection /> : <ChatSection />}
-        {state?.showLoadingOverlay && <Overlay />}
+        {tab === 0 ? <Participants /> : <ChatSection />}
       </div>
     </div>
   );

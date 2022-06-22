@@ -13,12 +13,6 @@ const initialState = {
   participants: [],
   remoteParticipants: [],
   messages: [],
-  setShowOverlay: (set) => {
-    initialState.showOverlay = set;
-  },
-  setMessages: (newMessages) => {
-    initialState.messages = newMessages;
-  },
 };
 
 const ContextElement = React.createContext();
@@ -27,6 +21,7 @@ export default function GlobalContext({ children }) {
   const [state, dispatch] = React.useReducer(GlobalReducer, initialState);
   const [isMicMuted, setIsMicMuted] = useState(false);
   const [participants, setParticipants] = useState([]);
+  const [showOverlay, setShowOverlay] = useState(true);
   return (
     <ContextElement.Provider
       value={{
@@ -36,6 +31,8 @@ export default function GlobalContext({ children }) {
         setIsMicMuted,
         participants,
         setParticipants,
+        showOverlay,
+        setShowOverlay,
       }}
     >
       {children}

@@ -16,16 +16,17 @@ const SingleParticipant = ({ identity, lastItem }) => {
 
 const Participants = () => {
   const { participants } = useContext();
-  console.log(participants);
   return (
-    <div className="participants_container">
-      {participants.map((participant, index) => (
-        <SingleParticipant
-          key={index}
-          identity={participant.identity}
-          lastItem={participants.length === index + 1}
-        />
-      ))}
+    <div className="participants_section_container">
+      <div className="participants_container">
+        {participants.map((participant, index) => (
+          <SingleParticipant
+            key={index}
+            identity={participant.identity}
+            lastItem={participants.length === index + 1}
+          />
+        ))}
+      </div>
     </div>
   );
 };

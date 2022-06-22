@@ -77,7 +77,7 @@ export const connectToRoom = async (
       console.log("succesfully connected with twilio room");
 
       setRoom(room);
-      setShowOverlay(true);
+      setShowOverlay(false);
     })
     .catch((err) => {
       console.log(
