@@ -26,9 +26,17 @@ const ContextElement = React.createContext();
 export default function GlobalContext({ children }) {
   const [state, dispatch] = React.useReducer(GlobalReducer, initialState);
   const [isMicMuted, setIsMicMuted] = useState(false);
+  const [participants, setParticipants] = useState([]);
   return (
     <ContextElement.Provider
-      value={{ state, dispatch, isMicMuted, setIsMicMuted }}
+      value={{
+        state,
+        dispatch,
+        isMicMuted,
+        setIsMicMuted,
+        participants,
+        setParticipants,
+      }}
     >
       {children}
     </ContextElement.Provider>

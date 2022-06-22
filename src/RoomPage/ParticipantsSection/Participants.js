@@ -8,26 +8,22 @@ const SingleParticipant = ({ identity, lastItem }) => {
 
   return (
     <>
-      <p className="participants_paragraph">
-        {/* {getParticipantName(identity)} */}
-        {identity.slice(36, identity.length)}
-      </p>
+      <p className="participants_paragraph">{getParticipantName(identity)}</p>
       {!lastItem && <span className="participants_separator_line"></span>}
     </>
   );
 };
 
 const Participants = () => {
-  const { state } = useContext();
+  const { participants } = useContext();
+  console.log(participants);
   return (
     <div className="participants_container">
-      {state?.participants.map((participant, index) => (
+      {participants.map((participant, index) => (
         <SingleParticipant
-          // key={participant.identity}
-          // identity={participant.identity}
           key={index}
-          identity={participant}
-          lastItem={state?.participants.length === index + 1}
+          identity={participant.identity}
+          lastItem={participants.length === index + 1}
         />
       ))}
     </div>

@@ -3,7 +3,7 @@ import { useContext } from "../../../hooks/context/GlobalContext";
 import Participant from "./Participant";
 
 function TwilioRoom({ room }) {
-  const [participants, setParticipants] = useState([]);
+  const { participants, setParticipants } = useContext();
   useEffect(() => {
     const participantConnected = (participant) => {
       setParticipants((prevParticipants) => [...prevParticipants, participant]);

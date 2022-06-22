@@ -65,8 +65,8 @@ function Participant({ participant }) {
   return (
     <div className="participant">
       <h3>{getParticipantName(participant.identity)}</h3>
-      <video ref={videoRef} autoPlay={true} />
-      <audio ref={audioRef} autoPlay={true} />
+      <video ref={videoRef} />
+      <audio ref={audioRef} />
     </div>
   );
 }
