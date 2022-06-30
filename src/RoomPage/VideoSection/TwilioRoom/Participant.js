@@ -1,15 +1,23 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useContext } from "../../../hooks/context/GlobalContext";
 import { getParticipantName } from "./../../../utils/twilioUtils";
+import MicIcon from "@mui/icons-material/Mic";
+import MicOffIcon from "@mui/icons-material/MicOff";
+import CameraAltIcon from "@mui/icons-material/CameraAlt";
+import NoPhotographyIcon from "@mui/icons-material/NoPhotography";
+import { Button } from "@mui/material";
 
 function Participant({ participant, localParticipant = false }) {
-  const { dispatch } = useContext();
+  const { state, dispatch, isMicMuted } = useContext();
 
   const [videoTracks, setVideoTracks] = useState([]);
   const [audioTracks, setAudioTracks] = useState([]);
 
   const videoRef = useRef();
   const audioRef = useRef();
+
+  const [mic, setMic] = useState(null);
+  const [cam, setCam] = useState(null);
 
   const trackpubsToTracks = (trackMap) =>
     Array.from(trackMap.values())
@@ -26,11 +34,23 @@ function Participant({ participant, localParticipant = false }) {
     setAudioTracks(trackpubsToTracks(participant.audioTracks));
 
     const trackSubscribed = (track) => {
-      if (track.kind === "video")
+      if (track.kind === "video") {
+        track.on("enabled", () => {
+          setCam(true);
+        });
+        track.on("disabled", () => {
+          setCam(false);
+        });
         setVideoTracks((videoTracks) => [...videoTracks, track]);
-      else if (track.kind === "audio")
+      } else if (track.kind === "audio") {
+        track.on("enabled", () => {
+          setMic(true);
+        });
+        track.on("disabled", () => {
+          setMic(false);
+        });
         setAudioTracks((audioTracks) => [...audioTracks, track]);
-      else if (track.kind === "data")
+      } else if (track.kind === "data")
         track.on("message", (data) => {
           dispatch({
             type: "ADD_MESSAGES",
@@ -82,9 +102,28 @@ function Participant({ participant, localParticipant = false }) {
     }
   }, [audioTracks]);
 
+  const MediaStatus = () => {
+    return (
+      <>
+        {mic ? <MicIcon /> : <MicOffIcon />}
+        {cam ? <CameraAltIcon /> : <NoPhotographyIcon />}
+      </>
+    );
+  };
+
+  const muteParticipant = () => {
+    console.log(audioTracks);
+  };
+
   return (
     <div className="participant">
-      <h3>{getParticipantName(participant.identity)}</h3>
+      <h3>
+        {getParticipantName(participant.identity)}{" "}
+        {participant.identity === state?.roomHost ? "Host" : "participant"}
+        {mic ? <MicIcon /> : <MicOffIcon />}
+        {cam ? <CameraAltIcon /> : <NoPhotographyIcon />}
+      </h3>
+      <Button onClick={muteParticipant}>Click</Button>
       <video ref={videoRef} />
       <audio ref={audioRef} />
     </div>

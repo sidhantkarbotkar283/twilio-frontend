@@ -18,15 +18,22 @@ const JoinRoomContent = ({ setShowLoadingOverlay }) => {
       type: "SET_IDENTITY",
       payload: { identity: nameValue },
     });
+
     if (!state.isRoomHost) {
       setShowLoadingOverlay(true);
       const roomExists = await checkIfRoomExists(roomIdValue);
+      console.log(roomExists);
+      dispatch({
+        type: "SET_ROOM_HOST",
+        payload: { host: roomExists.room.uniqueName },
+      });
       setShowLoadingOverlay(false);
-      if (roomExists) {
+      if (roomExists.roomExists) {
         dispatch({
           type: "SET_ROOM_ID",
           payload: { roomId: roomIdValue },
         });
+
         history.push("/room");
       } else
         dispatch({

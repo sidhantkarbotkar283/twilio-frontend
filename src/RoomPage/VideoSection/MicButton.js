@@ -5,8 +5,7 @@ import MicButtonImg from "../../resources/images/mic.svg";
 import MicButtonImgOff from "../../resources/images/micOff.svg";
 
 const MicButton = ({ room }) => {
-  const [isMicMuted, setIsMicMuted] = useState(false);
-  // const { isMicMuted, setIsMicMuted } = useContext();
+  const { isMicMuted, setIsMicMuted } = useContext();
   const handleMicButtonPressed = () => {
     isMicMuted ? unmute() : mute();
     setIsMicMuted(!isMicMuted);

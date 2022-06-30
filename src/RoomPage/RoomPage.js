@@ -13,7 +13,7 @@ import { useContext } from "../hooks/context/GlobalContext";
 
 const RoomPage = () => {
   const history = useHistory();
-  const { state, dispatch, showOverlay } = useContext();
+  const { state, dispatch, showOverlay, open, setOpen } = useContext();
   const randomId = uuidv4();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(async () => {

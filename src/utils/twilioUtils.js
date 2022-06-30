@@ -33,6 +33,7 @@ let dataChannel = null;
 
 export const getTokenFromTwilio = async (setToken, identity) => {
   const randomId = uuidv4();
+  console.log();
   const response = await axios.get(
     `${tokenServiceURL}?identity=${randomId}${identity}`
   );
@@ -44,8 +45,12 @@ export const connectToRoom = async (
   roomId = "test-room",
   setRoom,
   connectOnlyWithAudio,
-  setShowOverlay
+  setShowOverlay,
+  isRoomHost,
+  identity
 ) => {
+  console.log(isRoomHost);
+
   const constraints = connectOnlyWithAudio
     ? audioConstraints
     : videoConstraints;
@@ -69,15 +74,25 @@ export const connectToRoom = async (
         tracks = [audioTrack, dataTrack];
       }
 
+      // if (!isRoomHost) {
+      //   const content = `${identity} wants to join`;
+      //   const stringifiedMessage = JSON.stringify({
+      //     identity,
+      //     content,
+      //   });
+      //   dataChannel.send("hello");
+      //   console.log(dataChannel);
+      // } else {
       const room = await connect(accessToken, {
         name: roomId,
         tracks,
       });
 
       console.log("succesfully connected with twilio room");
-
+      console.log(room);
       setRoom(room);
       setShowOverlay(false);
+      // }
     })
     .catch((err) => {
       console.log(
@@ -89,8 +104,7 @@ export const connectToRoom = async (
 
 export const checkIfRoomExists = async (roomId) => {
   const response = await axios.get(`${roomExistsURL}?roomId=${roomId}`);
-
-  return response.data.roomExists;
+  return response.data;
 };
 
 export const sendMessagesUsingDataChannel = (

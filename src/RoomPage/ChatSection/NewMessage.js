@@ -12,13 +12,12 @@ const NewMessage = () => {
     let newMessage = sendMessagesUsingDataChannel(
       message,
       true,
-      state?.identity,
-      state?.messages,
-      state?.setMessages
+      state?.identity
     );
 
     let newMessages = [...state?.messages];
     newMessages.push(newMessage);
+    console.log(newMessages);
     dispatch({ type: "SET_MESSAGES", payload: { messages: newMessages } });
 
     setMessage("");

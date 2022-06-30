@@ -5,6 +5,7 @@ const initialState = {
   identity: "",
   showLoadingOverlay: false,
   isRoomHost: false,
+  roomHost: "",
   connectOnlyWithAudio: false,
   roomId: null,
   twilioAccessToken: null,
@@ -22,6 +23,10 @@ export default function GlobalContext({ children }) {
   const [isMicMuted, setIsMicMuted] = useState(false);
   const [participants, setParticipants] = useState([]);
   const [showOverlay, setShowOverlay] = useState(true);
+  const [granted, setGranted] = useState(false);
+  const [open, setOpen] = React.useState(false);
+  const [isScreenSharing, setIsScreenSharing] = React.useState(false);
+
   return (
     <ContextElement.Provider
       value={{
@@ -33,6 +38,10 @@ export default function GlobalContext({ children }) {
         setParticipants,
         showOverlay,
         setShowOverlay,
+        granted,
+        setGranted,
+        open,
+        setOpen,
       }}
     >
       {children}

@@ -9,7 +9,7 @@ const RoomLabel = () => {
       <div>
         ID: {state?.roomId} {"\n"}
       </div>
-      <div>Name : {state?.identity}</div>
+      {/* <div>Name : {state?.identity}</div> */}
       {/* </p> */}
     </div>
   );
