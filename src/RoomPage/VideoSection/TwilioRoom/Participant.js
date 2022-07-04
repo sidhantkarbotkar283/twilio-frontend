@@ -8,7 +8,7 @@ import NoPhotographyIcon from "@mui/icons-material/NoPhotography";
 
 function Participant({ participant, localParticipant = false }) {
   const {
-    state,
+    participants,
     dispatch,
     isScreenSharing,
     setIsScreenSharing,
@@ -84,6 +84,8 @@ function Participant({ participant, localParticipant = false }) {
     }
     videoTracks.map((track) => {
       if (track) {
+        console.log(track);
+        setCam(track.isEnabled);
         track.attach(videoRef.current);
         return () => {
           track.detach();
@@ -95,6 +97,7 @@ function Participant({ participant, localParticipant = false }) {
   useEffect(() => {
     const audioTrack = audioTracks[0];
     if (audioTrack) {
+      setMic(audioTrack.isEnabled);
       audioTrack.attach(audioRef.current);
       return () => audioTrack.detach();
     }
@@ -105,11 +108,11 @@ function Participant({ participant, localParticipant = false }) {
       <div
         className={`participant width-100 height-100  ${
           !isScreenSharing &&
-          (state?.participants?.length === 1
+          (participants?.length === 1
             ? "two-rows"
-            : state?.participants?.length > 1
+            : participants?.length > 1
             ? "three-rows"
-            : "")
+            : "one-row")
         }
         ${
           isScreenSharing &&
