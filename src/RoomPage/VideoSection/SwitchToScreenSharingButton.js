@@ -3,12 +3,14 @@ import { LocalVideoTrack } from "twilio-video";
 import { useContext } from "../../hooks/context/GlobalContext";
 import SwitchImg from "../../resources/images/switchToScreenSharing.svg";
 import LocalScreenSharingPreview from "./LocalScreenSharingPreview";
+import { IconButton } from "@mui/material";
+import ScreenShareIcon from "@mui/icons-material/ScreenShare";
 
 const SwitchToScreenSharingButton = ({ room }) => {
   const [isScreenSharingActive, setIsScreenSharingActive] = useState(false);
   const [screenShareTrack, setScreenShareTrack] = useState(null);
   const [screenShareStream, setScreenShareStream] = useState(null);
-  const { isScreenSharing, setIsScreenSharing } = useContext();
+  const { isScreenSharing } = useContext();
 
   const handleScreenSharingEnabling = () => {
     // handle screen sharing
@@ -51,11 +53,13 @@ const SwitchToScreenSharingButton = ({ room }) => {
   return (
     <>
       <div className="video_button_container">
-        <img
-          src={SwitchImg}
+        <IconButton
+          sx={{ color: "white" }}
           onClick={handleScreenSharingEnabling}
           className="video_button_image"
-        />
+        >
+          <ScreenShareIcon sx={{ color: "white" }} />
+        </IconButton>
       </div>
       {isScreenSharingActive && (
         <LocalScreenSharingPreview stream={screenShareStream} />

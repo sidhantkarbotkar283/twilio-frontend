@@ -368,6 +368,10 @@
   align-items: center;
   gap: 20px;
   width: 100%;
+  height: fit-content;
+  align-items: stretch;
+  margin-top: auto;
+  margin-bottom: auto;
   /* flex-direction: row; */
   /* flex-wrap: nowrap;
   justify-content: space-between; */
@@ -380,6 +384,7 @@
   position: relative;
   border-radius: 6px;
   display: inline-block;
+  background-color: black;
 }
 
 .one-row {

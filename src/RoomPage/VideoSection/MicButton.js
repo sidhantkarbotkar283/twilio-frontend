@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { useContext } from "../../hooks/context/GlobalContext";
-
-import MicButtonImg from "../../resources/images/mic.svg";
-import MicButtonImgOff from "../../resources/images/micOff.svg";
+import { IconButton } from "@mui/material";
+import MicIcon from "@mui/icons-material/Mic";
+import MicOffIcon from "@mui/icons-material/MicOff";
 
 const MicButton = ({ room }) => {
   const { isMicMuted, setIsMicMuted } = useContext();
@@ -27,11 +27,9 @@ const MicButton = ({ room }) => {
 
   return (
     <div className="video_button_container">
-      <img
-        src={isMicMuted ? MicButtonImgOff : MicButtonImg}
-        onClick={handleMicButtonPressed}
-        className="video_button_image"
-      />
+      <IconButton onClick={handleMicButtonPressed} sx={{ color: "white" }}>
+        {isMicMuted ? <MicOffIcon /> : <MicIcon />}
+      </IconButton>
     </div>
   );
 };

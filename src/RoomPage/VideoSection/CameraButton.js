@@ -2,6 +2,9 @@ import React, { useState } from "react";
 
 import CameraButtonImg from "../../resources/images/camera.svg";
 import CameraButtonImgOff from "../../resources/images/cameraOff.svg";
+import CameraAltIcon from "@mui/icons-material/CameraAlt";
+import NoPhotographyIcon from "@mui/icons-material/NoPhotography";
+import { IconButton } from "@mui/material";
 
 const CameraButton = ({ room }) => {
   const [isLocalVideoTrackDisabled, setIsLocalVideoTrackDisabled] =
@@ -16,24 +19,24 @@ const CameraButton = ({ room }) => {
   const startVideo = () => {
     // start sending back video stream to other users
     room.localParticipant.videoTracks.forEach((localVideoTrackPublication) => {
-      localVideoTrackPublication.track.enable();
+      if (!localVideoTrackPublication.trackName !== "screen-share-track")
+        localVideoTrackPublication.track.enable();
     });
   };
 
   const stopVideo = () => {
     // stop sending camera stream to other users
     room.localParticipant.videoTracks.forEach((localVideoTrackPublication) => {
-      localVideoTrackPublication.track.disable();
+      if (localVideoTrackPublication.trackName !== "screen-share-track")
+        localVideoTrackPublication.track.disable();
     });
   };
 
   return (
     <div className="video_button_container">
-      <img
-        src={isLocalVideoTrackDisabled ? CameraButtonImgOff : CameraButtonImg}
-        className="video_button_image"
-        onClick={handleCameraButtonPressed}
-      />
+      <IconButton onClick={handleCameraButtonPressed} sx={{ color: "white" }}>
+        {isLocalVideoTrackDisabled ? <NoPhotographyIcon /> : <CameraAltIcon />}
+      </IconButton>
     </div>
   );
 };
