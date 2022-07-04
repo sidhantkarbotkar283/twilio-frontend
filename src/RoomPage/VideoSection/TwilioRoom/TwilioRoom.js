@@ -69,7 +69,11 @@ function TwilioRoom({ room }) {
 
   return (
     <div className="room">
-      <div className="remote-participants">
+      <div
+        className={`remote-participants ${
+          state?.participants?.length === 0 ? "height-100" : ""
+        }`}
+      >
         {room && (
           <Participant
             localParticipant

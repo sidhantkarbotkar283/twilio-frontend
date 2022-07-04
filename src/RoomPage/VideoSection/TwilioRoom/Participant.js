@@ -103,7 +103,7 @@ function Participant({ participant, localParticipant = false }) {
   return (
     <>
       <div
-        className={`participant width-100  ${
+        className={`participant width-100 height-100  ${
           !isScreenSharing &&
           (state?.participants?.length === 1
             ? "two-rows"
