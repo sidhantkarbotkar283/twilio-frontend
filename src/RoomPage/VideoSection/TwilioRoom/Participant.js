@@ -5,14 +5,17 @@ import MicIcon from "@mui/icons-material/Mic";
 import MicOffIcon from "@mui/icons-material/MicOff";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import NoPhotographyIcon from "@mui/icons-material/NoPhotography";
-import { Button } from "@mui/material";
 
 function Participant({ participant, localParticipant = false }) {
-  const { state, dispatch, isMicMuted } = useContext();
-
+  const {
+    state,
+    dispatch,
+    isScreenSharing,
+    setIsScreenSharing,
+    setScreenSharingTrack,
+  } = useContext();
   const [videoTracks, setVideoTracks] = useState([]);
   const [audioTracks, setAudioTracks] = useState([]);
-
   const videoRef = useRef();
   const audioRef = useRef();
 
@@ -25,11 +28,6 @@ function Participant({ participant, localParticipant = false }) {
       .filter((track) => track !== null);
 
   useEffect(() => {
-    // console.log(participant);
-    // participant?.audioTracks?.forEach((localAudioTrackPublication) => {
-    //   if (!localParticipant) console.log(localAudioTrackPublication.track);
-    // });
-
     setVideoTracks(trackpubsToTracks(participant.videoTracks));
     setAudioTracks(trackpubsToTracks(participant.audioTracks));
 
@@ -41,6 +39,8 @@ function Participant({ participant, localParticipant = false }) {
         track.on("disabled", () => {
           setCam(false);
         });
+        if (track.name === "screen-share-track")
+          setScreenSharingTrack(participant);
         setVideoTracks((videoTracks) => [...videoTracks, track]);
       } else if (track.kind === "audio") {
         track.on("enabled", () => {
@@ -77,6 +77,11 @@ function Participant({ participant, localParticipant = false }) {
   }, [participant]);
 
   useEffect(() => {
+    if (videoTracks.length === 2) setIsScreenSharing(true);
+    else {
+      setIsScreenSharing(false);
+      setScreenSharingTrack(null);
+    }
     videoTracks.map((track) => {
       if (track) {
         track.attach(videoRef.current);
@@ -85,13 +90,6 @@ function Participant({ participant, localParticipant = false }) {
         };
       }
     });
-    // const videoTrack = videoTracks[videoTracks.length - 1];
-    // if (videoTrack) {
-    //   videoTrack.attach(videoRef.current);
-    //   return () => {
-    //     videoTrack.detach();
-    //   };
-    // }
   }, [videoTracks]);
 
   useEffect(() => {
@@ -102,31 +100,36 @@ function Participant({ participant, localParticipant = false }) {
     }
   }, [audioTracks]);
 
-  const MediaStatus = () => {
-    return (
-      <>
-        {mic ? <MicIcon /> : <MicOffIcon />}
-        {cam ? <CameraAltIcon /> : <NoPhotographyIcon />}
-      </>
-    );
-  };
-
-  const muteParticipant = () => {
-    console.log(audioTracks);
-  };
-
   return (
-    <div className="participant">
-      <h3>
-        {getParticipantName(participant.identity)}{" "}
-        {participant.identity === state?.roomHost ? "Host" : "participant"}
-        {mic ? <MicIcon /> : <MicOffIcon />}
-        {cam ? <CameraAltIcon /> : <NoPhotographyIcon />}
-      </h3>
-      <Button onClick={muteParticipant}>Click</Button>
-      <video ref={videoRef} />
-      <audio ref={audioRef} />
-    </div>
+    <>
+      <div
+        className={`participant width-100  ${
+          !isScreenSharing &&
+          (state?.participants?.length === 1
+            ? "two-rows"
+            : state?.participants?.length > 1
+            ? "three-rows"
+            : "")
+        }
+        ${
+          isScreenSharing &&
+          (videoTracks.length === 2 ? "one-row" : "non-visible")
+        }
+        `}
+      >
+        <div className="participant-info flex flex-col v-center">
+          <h3>{getParticipantName(participant.identity)}</h3>
+          {!localParticipant && (
+            <>
+              {mic ? <MicIcon /> : <MicOffIcon />}
+              {cam ? <CameraAltIcon /> : <NoPhotographyIcon />}
+            </>
+          )}
+        </div>
+        <video ref={videoRef} />
+        <audio ref={audioRef} />
+      </div>
+    </>
   );
 }
 

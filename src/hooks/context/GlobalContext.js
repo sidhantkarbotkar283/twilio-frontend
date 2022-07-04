@@ -26,6 +26,7 @@ export default function GlobalContext({ children }) {
   const [granted, setGranted] = useState(false);
   const [open, setOpen] = React.useState(false);
   const [isScreenSharing, setIsScreenSharing] = React.useState(false);
+  const [screenSharingTrack, setScreenSharingTrack] = React.useState(null);
 
   return (
     <ContextElement.Provider
@@ -42,6 +43,10 @@ export default function GlobalContext({ children }) {
         setGranted,
         open,
         setOpen,
+        isScreenSharing,
+        setIsScreenSharing,
+        screenSharingTrack,
+        setScreenSharingTrack,
       }}
     >
       {children}

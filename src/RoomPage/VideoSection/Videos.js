@@ -37,11 +37,7 @@ const Videos = ({ room, setRoom }) => {
   }, [state?.twilioAccessToken]);
 
   return (
-    <div className="videos_container">
-      <div>ID: {state?.roomId}</div>
-
-      {room && <TwilioRoom room={room} />}
-    </div>
+    <div className="videos_container">{room && <TwilioRoom room={room} />}</div>
   );
 };
 

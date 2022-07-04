@@ -5,7 +5,14 @@ import { getParticipantName } from "../../../utils/twilioUtils";
 import Participant from "./Participant";
 
 function TwilioRoom({ room }) {
-  const { participants, setParticipants, state, dispatch } = useContext();
+  const {
+    participants,
+    setParticipants,
+    state,
+    dispatch,
+    isScreenSharing,
+    screenSharingTrack,
+  } = useContext();
 
   const handleAddParticipant = (sid) => {
     dispatch({
@@ -56,26 +63,22 @@ function TwilioRoom({ room }) {
     }
   }, []);
 
-  const remoteParticipants = participants.map((participant, index) => (
-    // state?.participants[index]?.granted &
+  const remoteParticipants = participants.map((participant) => (
     <Participant key={participant.sid} participant={participant} />
   ));
 
   return (
     <div className="room">
-      <div className="local-participant">
-        {room ? (
+      <div className="remote-participants">
+        {room && (
           <Participant
             localParticipant
             key={room.localParticipant.sid}
             participant={room.localParticipant}
           />
-        ) : (
-          ""
         )}
+        {remoteParticipants}
       </div>
-      <h3>Remote Participants</h3>
-      <div className="remote-participants">{remoteParticipants}</div>
     </div>
   );
 }

@@ -15,7 +15,7 @@ const SingleParticipant = ({ identity, lastItem }) => {
 };
 
 const Participants = () => {
-  const { participants } = useContext();
+  const { state, participants } = useContext();
   return (
     <div className="participants_section_container">
       <div className="participants_container">
@@ -26,6 +26,7 @@ const Participants = () => {
             lastItem={participants.length === index + 1}
           />
         ))}
+        <div>ID: {state?.roomId}</div>
       </div>
     </div>
   );

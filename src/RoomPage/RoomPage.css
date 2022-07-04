@@ -58,6 +58,12 @@
   margin-bottom: 5px;
 }
 
+.screenshare-video {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
 .local_screen_share_preview {
   position: absolute;
   width: 15%;
@@ -133,16 +139,16 @@
   top: 0;
   left: 0;
 }
-
+/* 
 .room {
   width: 100%;
   height: 100%;
-}
+} */
 
-video {
+/* video {
   width: 98%;
   height: 98%;
-}
+} */
 
 .room_label {
   position: absolute;
@@ -175,7 +181,7 @@ video {
   height: 100%;
   width: 100%;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
 }
 
 /* video section? */
@@ -334,8 +340,9 @@ video {
 /* video call room  */
 
 .room {
-  position: relative;
-  height: 400px;
+  width: 100%;
+  display: flex;
+  height: 90%;
 }
 
 .room button {
@@ -356,33 +363,69 @@ video {
 
 .remote-participants {
   display: flex;
-  flex-wrap: nowrap;
-  justify-content: space-between;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  /* flex-direction: row; */
+  /* flex-wrap: nowrap;
+  justify-content: space-between; */
   /* padding: 0 2em 2em; */
 }
 
 .participant {
-  background: rgba(0, 0, 255, 0.493);
-  /* padding: 10px; */
+  /* height: 400px; */
+  flex: 0 1 90%;
+  position: relative;
   border-radius: 6px;
   display: inline-block;
-  /* margin-right: 10px; */
+}
+
+.one-row {
+  flex: 0 1 100%;
+}
+
+.two-rows {
+  flex: 0 1 48%;
+}
+
+.three-rows {
+  flex: 0 1 30%;
+}
+
+.visible {
+  display: flex;
+}
+
+.non-visible {
+  display: none;
 }
 
 .participant:last-child {
   margin-right: 0;
 }
-.participant h3 {
-  text-align: center;
-  /* padding-bottom: 0.5em; */
+.participant .participant-info {
+  max-width: 200px;
+  height: 30px;
+  border-radius: 6px;
+  padding: 0 1% 0 1%;
+  background-color: rgba(0, 0, 0, 0.377);
+  position: absolute;
+  bottom: 0;
   color: #fff;
 }
 
 .participant video {
   width: 100%;
-  max-width: 400px;
-  height: 300px;
+  height: 100%;
+  /* max-width: 50%; */
   display: block;
   margin: 0 auto;
   border-radius: 6px;
+}
+
+.local_screen_share_preview video {
+  width: 100%;
+  height: 100%;
 }
